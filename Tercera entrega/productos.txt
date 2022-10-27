@@ -1,0 +1,1 @@
+[{"title":"Regla 0","price":125,"thumbnail":"regla.png","id":0},{"title":"Escuadra 1","price":91,"thumbnail":"escuadra.png","id":1},{"title":"Transportador 2","price":48,"thumbnail":"transportador.png","id":2},{"title":"Compas 3","price":42,"thumbnail":"compas.png","id":3}]

@@ -1,1 +1,0 @@
-[{"title":"Alimento Sobrecito Balanceado 0","price":110040,"thumbnail":"pedigree.png","id":0},{"title":"Alimento Sobrecito Balanceado 1","price":110040,"thumbnail":"pedigree.png","id":1}]

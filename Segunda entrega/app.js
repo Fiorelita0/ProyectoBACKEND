@@ -76,12 +76,12 @@ class Contenedor {
 
 const contenedor = new Contenedor("./productos.txt");
 //Agregar un producto más
-contenedor.save({title: "Alimento Sobrecito Balanceado 7",price: 3040,thumbnail: "pedigree.png",}).then((resolve) => console.log(resolve));
+contenedor.save({title: "Alimento Sobrecito Balanceado 2",price: 4850,thumbnail: "pedigree.png",}).then((resolve) => console.log(resolve));
 //Filtramos por id
 contenedor.getById(1).then((resolve) => console.log("El producto buscado es: ", resolve));
 //Todos los productos
 contenedor.getAll().then((resolve) =>console.log("Estos son todos los productos existentes:", resolve));
 //Eliminar producto segun id
-contenedor.deleteById(3)
+contenedor.deleteById(4)
 //Eliminar todos los productos
 contenedor.deleteAll
