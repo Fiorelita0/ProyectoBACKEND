@@ -2,15 +2,15 @@
     list-style: none;
 }
 
-.userName {
+.usuarioName {
     color: blue;
 }
 
-.userDate {
+.usuarioDate {
     color: #BC5B8C;
 }
 
-.userMsg {
+.usuarioMsg {
     display: inline-block;
     font-style: italic;
     color: #6EAC55;

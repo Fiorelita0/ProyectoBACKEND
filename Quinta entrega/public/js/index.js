@@ -30,7 +30,7 @@ socket.on('mensajes', mensajes => {
     document.getElementById("chatText").innerHTML = `<ul>
     ${mensajes.map(dataCliente => {
         return (`<li class="listaMsg">
-    <b class="userName">${dataCliente.userName}</b>[<span class="userDate">${dataCliente.date}</span>]:<p class="userMsg">${dataCliente.msg}</p>
+    <b class="usuarioName">${dataCliente.userName}</b>[<span class="usuarioDate">${dataCliente.date}</span>]:<p class="usuarioMsg">${dataCliente.msg}</p>
     </li>`)
     }).join('')}
     </ul>
@@ -58,9 +58,9 @@ const showTable = () => {
     <div class="d-flex align-items-center flex-column" id="tabla">
             <table class="table table-striped">
                 <tr>
-                    <th>nombre</th>
-                    <th>precio</th>
-                    <th>img</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Imagen</th>
                 </tr>
                 <tbody id="tablaProducts">
                 </tbody>
