@@ -56,7 +56,7 @@ const showNoProducts = () => {
 const showTable = () => {
     document.getElementById('products').innerHTML = `
     <div class="d-flex align-items-center flex-column" id="tabla">
-            <table class="table table-dark">
+            <table class="table table-striped">
                 <tr>
                     <th>nombre</th>
                     <th>precio</th>
