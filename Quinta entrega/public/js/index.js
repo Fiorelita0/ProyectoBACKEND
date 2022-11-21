@@ -46,8 +46,6 @@ socket.on('showProducts', productos => {
     }
 })
 
-
-
 const showNoProducts = () => {
     document.getElementById('products').innerHTML = `<div id="noProducts">
     <h3>No hay producto</h3>
