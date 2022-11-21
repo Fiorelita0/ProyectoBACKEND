@@ -1,21 +1,22 @@
 const express = require('express');
-const { Router } = require('express')
+const { Router } = require('express');
+const moment = require('moment');
 const Contenedor = require("./Contenedor.js")
 const archivoProductos= new Contenedor('../productos.txt')
 const archivoCarrito = new Contenedor('../carrito.txt');
 
 const routerSesion = new Router()
 
-const routerProd = new Router()
-routerProd.use(express.json())
-routerProd.use(express.urlencoded({ extended: true }))
+const routerProductos = new Router()
+routerProductos.use(express.json())
+routerProductos.use(express.urlencoded({ extended: false}))
 
-const routerCarr = new Router()
-routerCarr.use(express.json())
-routerCarr.use(express.urlencoded({ extended: true }))
+const routerCarrito = new Router()
+routerCarrito.use(express.json())
+routerCarrito.use(express.urlencoded({ extended: false }))
 
 let admin = false;
-//Verify if admin is true?
+
 function soloParaAdmins(req, res, next) {
     if (admin) {
         next()
@@ -25,14 +26,13 @@ function soloParaAdmins(req, res, next) {
     }
 }
 
-//Get Date to a product
 const getDate = () => {
     const today = moment();
     return today.format("DD/MM/YYYY HH:mm:ss")
 }
-//Generate a code to a product
-const generateCode = async () => {
-    const dataProducts = await archivoProductos.retrieve()
+
+const generarCodigo = async () => {
+    const dataProducts = await archivoProductos.recuperar()
     let salir = true;
     //generate code
     while (salir) {
@@ -45,7 +45,7 @@ const generateCode = async () => {
 
 }
 
-//Ruta Madre:api/sesion/
+//api/sesion/
 //api/sesion/login
 routerSesion.get('/login', (req, res) => {
     admin = true
@@ -57,105 +57,106 @@ routerSesion.get('/logout', (req, res) => {
     res.sendStatus(200)
 })
 
-//Ruta Madre:api/productos/
 //api/productos/
-routerProd.get("/", (req, res) => {
-    archivoProductos.retrieve().then(prods => {
+//api/productos/
+routerProductos.get("/", (req, res) => {
+    archivoProductos.recuperar().then(prods => {
         res.json(prods)
     })
 
 })
 //api/productos/:id
-routerProd.get("/:id", (req, res) => {
+routerProductos.get("/:id", (req, res) => {
     let id = parseInt(req.params.id);
-    archivoProductos.retrieveId(id).then(prods => {
+    archivoProductos.recuperarId(id).then(prods => {
         res.json(prods)
     })
 })
 //api/productos/
-routerProd.post("/", soloParaAdmins, async (req, res) => {
-    const code = await generateCode();
+routerProductos.post("/", soloParaAdmins, async (req, res) => {
+    const code = await generarCodigo();
     const date = getDate()
     const obj = { ...req.body, code, date }
-    archivoProductos.save(obj).then(prods => {
+    archivoProductos.guardar(obj).then(prods => {
         res.json(prods)
     })
 })
 //api/productos/:id
-routerProd.put("/:id", soloParaAdmins, async (req, res) => {
-    const code = await generateCode();
+routerProductos.put("/:id", soloParaAdmins, async (req, res) => {
+    const code = await generarCodigo();
     const date = getDate()
     const obj = { ...req.body, code, date }
     let id = parseInt(req.params.id);
-    archivoProductos.update(obj, id).then(prods => {
+    archivoProductos.actualizar(obj, id).then(prods => {
         res.json(prods)
     })
 })
+
 //api/productos/:id
-routerProd.delete("/:id", soloParaAdmins, (req, res) => {
+routerProductos.delete("/:id", soloParaAdmins, (req, res) => {
     let id = parseInt(req.params.id);
-    archivoProductos.delete(id).then(prods => {
+    archivoProductos.eliminar(id).then(prods => {
         res.json(prods)
     })
 })
 
 //Ruta Madre:apí/carrito/
 //apí/carrito/
-routerCarr.post("/", (req, res) => {
+routerCarrito.post("/", (req, res) => {
     const carrito = { productos: [], timestamp: getDate() }
-    archivoCarrito.save(carrito).then(carrito => {
+    archivoCarrito.guardar(carrito).then(carrito => {
         res.json(carrito.id)
     })
 })
 //apí/carrito/:id
-routerCarr.delete("/:id", (req, res) => {
+routerCarrito.delete("/:id", (req, res) => {
     const id = parseInt(req.params.id);
-    archivoCarrito.retrieveId(id).then(carrito => {
+    archivoCarrito.recuperarId(id).then(carrito => {
         carrito.productos = []
-        archivoCarrito.update(carrito, id).then(arrayCarrito => {
+        archivoCarrito.actualizar(carrito, id).then(arrayCarrito => {
             res.json(arrayCarrito)
         })
     })
 
 })
 //apí/carrito/:id/productos
-routerCarr.get("/:id/productos", (req, res) => {
+routerCarrito.get("/:id/productos", (req, res) => {
     const id = parseInt(req.params.id);
-    archivoCarrito.retrieveId(id).then(carrito => {
+    archivoCarrito.recuperarId(id).then(carrito => {
         res.json(carrito.productos)
     })
 })
 //apí/carrito/:id/productos/
-routerCarr.post("/:id/productos/", (req, res) => {
+routerCarrito.post("/:id/productos/", (req, res) => {
     const id = parseInt(req.params.id);
     const id_prod = req.body.id;
-    archivoCarrito.retrieveId(id).then(carrito => {
-        return archivoProductos.retrieveId(id_prod).then(prods => {
+    archivoCarrito.recuperarId(id).then(carrito => {
+        return archivoProductos.recuperarId(id_prod).then(prods => {
             carrito.productos.push(prods);
             return carrito
         })
     }).then(carrito => {
-        archivoCarrito.update(carrito, id).then(compraUpdate => {
-            res.json(compraUpdate)
+        archivoCarrito.actualizar(carrito, id).then(compraactualizar => {
+            res.json(compraactualizar)
         })
     })
 })
 //apí/carrito/:id/productos/:id_prod
-routerCarr.delete("/:id/productos/:id_prod", (req, res) => {
+routerCarrito.delete("/:id/productos/:id_prod", (req, res) => {
     const id = parseInt(req.params.id);
     const id_prod = parseInt(req.params.id_prod);
-    archivoCarrito.retrieveId(id).then(carrito => {
+    archivoCarrito.recuperarId(id).then(carrito => {
         const arrayAuxy = carrito.productos.filter(item => item.id != id_prod);
         carrito.productos.splice(0)
         carrito.productos.push(...arrayAuxy)
         return carrito
     }).then(carrito => {
-        archivoCarrito.update(carrito, id).then(compraUpdate => {
-            res.json(compraUpdate)
+        archivoCarrito.actualizar(carrito, id).then(compraactualizar => {
+            res.json(compraactualizar)
         })
     })
 })
 
 module.exports = {
-   routerProd, routerCarr, routerSesion
+   routerProductos, routerCarrito, routerSesion
 }

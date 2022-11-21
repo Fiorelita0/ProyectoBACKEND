@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('fs');
 class Contenedor {
     constructor(ruta) {
         this.ruta = ruta
@@ -36,39 +36,39 @@ class Contenedor {
         try {
             const contenido = await fs.promises.readFile(this.ruta, 'utf-8')
             this.array = JSON.parse(contenido)
-            const objId = this.array.filter(item => item.id == id)
-            return (objId ? objId : { error: "Producto no encontrado" })
+            const objId = this.array.find(item => item.id == id)
+            return (objId ? objId : { error: "producto no encontrado" })
         } catch {
             return {}
         }
     }
 
     async actualizar(obj, id) {
-        this.productos = this.productos.map(prod=>{
-            if(prod.id == id){
+        this.productos = this.productos.map(produ=>{
+            if(produ.id == id){
                 if(obj.title){
-                    prod.title=obj.title;
+                    produ.title=obj.title;
                 }
                 if(obj.price){
-                    prod.price=obj.price;
+                    produ.price=obj.price;
                 }
                 if(obj.thumbnail){
-                    prod.thumbnail=obj.thumbnail;
+                    produ.thumbnail=obj.thumbnail;
                 }
             }
-            return prod;
+            return produ;
         })
         return obj;
     }
 
     async eliminar(id) {
         this.array = await this.recuperar()
-        let newArray = this.array.filter(item => item.id != id);
+        let auxArray = this.array.filter(item => item.id != id);
         this.array.splice(0);
-        this.array.push(...newArray);
+        this.array.push(...auxArray);
         const contenido = JSON.stringify(this.array, null, 4)
         await fs.promises.writeFile(this.ruta, contenido)
         return (this.array);
     }
 }
-module.exports = Contenedor
+module.exports = Contenedor  
