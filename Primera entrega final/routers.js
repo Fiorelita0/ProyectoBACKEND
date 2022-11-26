@@ -100,7 +100,7 @@ routerProductos.delete("/:id", soloParaAdmins, (req, res) => {
     })
 })
 
-//Ruta Madre:apí/carrito/
+//api/carrito/
 //apí/carrito/
 routerCarrito.post("/", (req, res) => {
     const carrito = { productos: [], timestamp: getDate() }
