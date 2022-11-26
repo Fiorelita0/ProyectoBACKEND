@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <%- include('./partials/head') %>
+    <%- include('./partials/head.ejs') %>
         <title>Formulario</title>
-        <link rel="stylesheet" href="./css/main.css">
+        
         <script src="/socket.io/socket.io.js"></script>
 </head>
 
@@ -60,9 +60,9 @@
     <div class="container-xxl ">
         <div id="chatText"></div>
     </div>
-    <%- include('./partials/BS') %>
+    <%- include('./partials/BS.ejs') %>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-        <script src="../public/cliente.js"></script>
+        <script src="./public/cliente.js"></script>
 </body>
 
 </html>

@@ -11,7 +11,8 @@ const getConfig = (CLIENT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DB_NAME) => {
             client: CLIENT,
             connection: {
                 filename: "./db/ecommerce.sqlite"
-            }
+            },
+            useNullAsDefault: true
         }
         return KNEX_CONFIG
     }
